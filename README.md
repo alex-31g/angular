@@ -4,20 +4,20 @@
 ```js
 basic-app/
   node_modules/
-	package.json
-	angular.json
-	tsconfig.json
+  package.json
+  angular.json
+  tsconfig.json
 
-	src/
-	  main.ts
-		polyfills.ts
-		index.html
+  src/
+    main.ts
+    polyfills.ts
+    index.html
 		
-	  app/
-		  app.module.ts
-		  app.component.html
-			app.component.css
-			app.component.ts
+    app/
+      app.module.ts
+      app.component.html
+      app.component.css
+      app.component.ts
 ```
 - *node_modules* - установленные npm-модули
 - *package.json* - метаинформация и список необходимых npm-модулей
