@@ -46,12 +46,13 @@ basic-app/
 - FormsModule;
 - ReactiveFormsModule;
 - HttpClientModule;
-- RouterModule и др.           
+- RouterModule и др. 
+
 Не все библиотеки обязательны для использования в приложении, часть подключается по мере необходимости, например, FormsModule или HttpModule.
 
 ## main.ts
 При запуске приложения первым выполняется код файла main.ts:
-```javascript {.line-numbers} 
+```line-numbers
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 
@@ -109,6 +110,7 @@ import { AppComponent } from './app.component';
 export class AppModule {}
 ```
 **Только корневой модуль может определять свойство bootstrap и импортировать BrowserModule.**     
+
 Импорты:
 - BrowserModule - модуль, необходимый для работы с браузером
 - NgModule - декоратор NgModule, с помощью которого создаются модули
