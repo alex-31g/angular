@@ -2,7 +2,7 @@ https://webdraftt.com/tutorial
 https://metanit.com/web/angular2   
 https://xsltdev.ru/angular/tutorial/   
 
-# Базовая структура angular приложения [файл: 01. basic app]
+# Базовая структура angular приложения [01. basic app]
 Минимальная структура приложения:
 ```js
 basic-app/
@@ -24,7 +24,7 @@ basic-app/
 ```
 - *node_modules* - установленные npm-модули
 - *package.json* - метаинформация и список необходимых npm-модулей
-- *angular.json* - описание конфигурации приложения
+- *angular.json* - описание конфигурации приложения    
 	Детально о *angular.json*:  
 	https://angular.io/guide/workspace-config  
 	https://nitayneeman.com/posts/understanding-the-angular-cli-workspace-file/  
@@ -46,12 +46,12 @@ basic-app/
 - FormsModule;
 - ReactiveFormsModule;
 - HttpClientModule;
-- RouterModule и др.
+- RouterModule и др.           
 Не все библиотеки обязательны для использования в приложении, часть подключается по мере необходимости, например, FormsModule или HttpModule.
 
 ## main.ts
 При запуске приложения первым выполняется код файла main.ts:
-```javascript
+```javascript {.line-numbers} 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 
@@ -69,7 +69,7 @@ platformBrowserDynamic()
 ```
 
 ## Модули 
-`https://angular.io/api/core/NgModule`
+https://angular.io/api/core/NgModule                 
 Модуль - это класс с декоратором **@NgModule()**.   
 Для разделения приложения на логические части используются модули.   
 Модуль — это контейнер для компонентов, директив, фильтров и сервисов, которые объеденены общей логикой и которые реализовывают общий функционал.  
@@ -108,7 +108,7 @@ import { AppComponent } from './app.component';
 })
 export class AppModule {}
 ```
-Только корневой модуль может определять свойство bootstrap и импортировать BrowserModule.
+**Только корневой модуль может определять свойство bootstrap и импортировать BrowserModule.**     
 Импорты:
 - BrowserModule - модуль, необходимый для работы с браузером
 - NgModule - декоратор NgModule, с помощью которого создаются модули
@@ -122,9 +122,9 @@ export class AppModule {}
 https://webdraftt.com/tutorial/angular-modules 
 
 ## Компонент
-`https://angular.io/api/core/Component`
-Компонент - это класс с декоратором **@Component()**.
-Компонент - изолированная часть функционала со своей логикой, HTML-шаблоном и CSS-стилями.
+https://angular.io/api/core/Component                       
+Компонент - это класс с декоратором **@Component()**.            
+Компонент - изолированная часть функционала со своей логикой, HTML-шаблоном и CSS-стилями.           
 При создании компонента используется декоратор @Component(), который принимает конфигурационный объект со свойствами:
 - selector - название компонента
 - template (или templateUrl) - HTML-шаблон в виде строки (или путь к HTML-файлу)
