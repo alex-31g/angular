@@ -1,0 +1,29 @@
+Родительский компонент:
+
+<br />
+<br />
+
+<!-- Когда сработает событие (click) - будет вызван метод addData() -->
+<button (click)="addData()">add</button>
+
+<!-- Когда сработает событие (change) - будет выполнен блок кода "app_data = $event.target.value" -->
+<input type="text" (change)="app_data = app_data + ' ' + $event.target.value" />
+
+<p>app_data = {{ app_data }}</p>
+
+<!-- Убрать или возвратить компонент child -->
+<button (click)="isChild = !isChild">del / back child</button><br>
+
+<!-- Две кнопки ниже демонстрируют отличие хуков ngOnChanges и ngDoCheck -->
+<button (click)="changeMutableData()">change mutable data</button><br>
+<button (click)="changeImmutableData()">change immutable data</button>
+
+<hr />
+
+<!-- Свойство child_data передается дочернему компоненту (так как помечено []). Его значение равно переменной app_data -->
+<child 
+	*ngIf="isChild"
+	[child_data]="app_data"
+	[child_data_2]="obj"
+	[child_data_3]="a"
+></child>
