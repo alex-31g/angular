@@ -1,33 +1,31 @@
 import {
   Component,
+  Input,
   OnChanges,
   SimpleChanges,
   OnInit,
-  OnDestroy,
   DoCheck,
-  Input,
   AfterContentInit,
   AfterContentChecked,
   AfterViewInit,
   AfterViewChecked,
-  ChangeDetectionStrategy,
+  OnDestroy,
 } from '@angular/core';
 
 @Component({
   selector: 'child',
   templateUrl: './child.component.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildComponent
   implements
-    OnInit,
     OnChanges,
-    OnDestroy,
+    OnInit,
     DoCheck,
     AfterContentInit,
     AfterContentChecked,
     AfterViewInit,
-    AfterViewChecked {
+    AfterViewChecked,
+    OnDestroy {
   // child_data - входное свойство (так как помечено декоратором @Input), получаемое от родителя
   @Input()
   child_data: any = 'child data';
@@ -53,14 +51,6 @@ export class ChildComponent
   ngOnChanges(changes: SimpleChanges): void {
     console.warn('child ngOnChanges', '\n', changes, '\n', this.child_data);
   }
-
-  // =========================
-  // https://www.youtube.com/watch?v=7LLnPxP8Txw
-
-  // 'changeDetection: ChangeDetectionStrategy.OnPush'
-  // onPush говорит, что процесс отслеживания изменений в компоненте будет происходить только тогда, когда поменяется ссылка инпут свойства
-  // увеличение производительности
-  // =========================
 
   // ngOnInit вызывается:
   // 1) один раз при установке 'обычных' свойств после первого вызова метода ngOnChanges (если он был вызван)
