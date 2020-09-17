@@ -1,1 +1,16 @@
-<h1>{{ title }}</h1>
+PARENT:
+<p>
+	{{p1.firstname}} {{p1.lastname}}
+	<button (click)='changeName1()'>Change Name</button>
+</p>
+<p>
+	{{p2.firstname}} {{p2.lastname}}
+	<button (click)='changeName2()'>Change Name</button>
+</p>
+
+<hr>
+
+<child 
+	[person1]='p1'
+	[person2]='p2'
+></child>
