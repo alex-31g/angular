@@ -182,11 +182,12 @@ import { ChangeDetectionStrategy } from '@angular/core';
 - asynchronous JavaScript function - setTimeOut(), setInterval() 
 
 ## Change Detection - ChangeDetectorRef [04. change detection 2]  
-В библиотеке @angular/core есть сервис `ChangeDetectorRef` - он предоставляет доступ к `процесс обнаружения изменений - change detection` конкретного компонента.
-Основные методы:
-detach() - полностью отключает механизм ChangeDetection;
-detectChanges() - принудительно запускает механизм отслеживания изменений;
-reattach() - используется после вызова detach() для активации механизма ChangeDetection.
+В библиотеке @angular/core есть сервис `ChangeDetectorRef` - он предоставляет доступ к `процесс обнаружения изменений - change detection` конкретного компонента.          
+Основные методы:             
+- detach() - полностью отключает механизм ChangeDetection;
+- detectChanges() - принудительно запускает механизм отслеживания изменений;
+- reattach() - используется после вызова detach() для активации механизма ChangeDetection.            
+
 Действие всех трех методов распространяется только на тот компонент, в пределах которого вызываются эти методы.     
 
 Подключение ChangeDetectorRef:     
