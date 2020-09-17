@@ -158,11 +158,11 @@ https://xsltdev.ru/angular/tutorial/component-lifecycle/
 
 Описание хуков смотреть в `02. lifecycle/src/app/components/child/*.ts`
 
-## ChangeDetectionStrategy [03. change detection]     
+## Change Detection [03. change detection]     
 https://www.telerik.com/blogs/simplifying-angular-change-detection      
 Когда происходит изменение хотя бы в одном из компонентов приложения, Angular запускает `процесс обнаружения изменений - change detection` по всем компонентам.        
 Этот процесс происходит с помощью **change detector**, который содержится в каждом компоненте.     
-**change detector** - часть структуры Angular, которая обеспечивает синхронизацию view (DOM) и данных модели.    
+***change detector* - часть структуры Angular, которая обеспечивает синхронизацию view (DOM) и данных модели и происходит перерисовка DOM в соответствии с моделью**.   
 В процессе роста приложения, частый запуск процесса обнаружения изменений может негативно сказываться на производительности приложения.      
 Чтобы запуск процесса обнаружения изменений не выполнялся при любом изменении в приложении, Angular имеет две стратегии - **change detection strategies**: 
 - Default (значение по умолчанию, которое не нужно явно указывать)
@@ -174,18 +174,31 @@ https://www.telerik.com/blogs/simplifying-angular-change-detection
 Пример установки **onPush** стратегии:
 ```js
 import { ChangeDetectionStrategy } from '@angular/core';
-@Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush })
 ```
 **Важная информация**: даже если для компонента задано значение onPush и ему не передается новая ссылка, Angular по-прежнему будет запускать для него change detector, если произойдет одно из следующих изменений внутри компонента:
 - событие, например click или submit
 - XHR запрос
 - asynchronous JavaScript function - setTimeOut(), setInterval() 
 
-Примеры использования onPush:
-1. В приложении много компонентов, и когда произошли изменения в одном из них, не нужно искать изменения во всем приложении. Лучше указать onPush в отдельных компонентах и Angular воспримет это как - "выполнять проверку в данном компоненте, только когда изменится ссылка на его @Input переменную"
-2. Есть объект, к которому мы обращаемся много раз, изменяя его. Но нас не интерисует его промежуточное состояние, нас интерисуют только его конечные данные. Поэтому промежуточные данные можно добавлять в объект путём мутирования, а конечный результат передавать в @Input переменную путём создания новой ссылки на этот объект.
+## Change Detection - ChangeDetectorRef [04. change detection 2]  
+В библиотеке @angular/core есть сервис `ChangeDetectorRef` - он предоставляет доступ к `процесс обнаружения изменений - change detection` конкретного компонента.
+Основные методы:
+detach() - полностью отключает механизм ChangeDetection;
+detectChanges() - принудительно запускает механизм отслеживания изменений;
+reattach() - используется после вызова detach() для активации механизма ChangeDetection.
+Действие всех трех методов распространяется только на тот компонент, в пределах которого вызываются эти методы.     
+
+Подключение ChangeDetectorRef:     
+```js
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush })
+export class ChildComponent implements OnChanges, DoCheck {
+	constructor(private cd: ChangeDetectorRef) {}
+}
+```
+https://habr.com/ru/company/infopulse/blog/358860/
+https://habr.com/ru/post/327004/
 
 ## Сервис
 В отличие от компонентов и директив, сервисы не работают с представлениями (html), они выполняют строго определенную и узкую задачу:
