@@ -160,11 +160,11 @@ https://xsltdev.ru/angular/tutorial/component-lifecycle/
 
 ## Change Detection [03. change detection]     
 https://www.telerik.com/blogs/simplifying-angular-change-detection      
-Когда происходит изменение хотя бы в одном из компонентов приложения, Angular запускает `процесс обнаружения изменений - change detection` по всем компонентам.        
+Когда происходит изменение хотя бы в одном из компонентов приложения, Angular запускает **механизм обнаружения изменений - change detection** по всем компонентам.        
 Этот процесс происходит с помощью **change detector**, который содержится в каждом компоненте.     
-***change detector* - часть структуры Angular, которая обеспечивает синхронизацию view (DOM) и данных модели и происходит перерисовка DOM в соответствии с моделью**.   
-В процессе роста приложения, частый запуск процесса обнаружения изменений может негативно сказываться на производительности приложения.      
-Чтобы запуск процесса обнаружения изменений не выполнялся при любом изменении в приложении, Angular имеет две стратегии - **change detection strategies**: 
+***change detector* - часть структуры Angular, которая обеспечивает синхронизацию view (DOM) и данных модели и происходит обновление DOM в соответствии с моделью**.   
+В процессе роста приложения, частый запуск механизма обнаружения изменений может негативно сказываться на производительности приложения.      
+Чтобы запуск механизма обнаружения изменений не выполнялся при любом изменении в приложении, Angular имеет две стратегии - **change detection strategies**: 
 - Default (значение по умолчанию, которое не нужно явно указывать)
 - onPush (задается с помощью параметра `changeDetection` внутри @Component)          
 
@@ -176,20 +176,22 @@ https://www.telerik.com/blogs/simplifying-angular-change-detection
 import { ChangeDetectionStrategy } from '@angular/core';
 @Component({ changeDetection: ChangeDetectionStrategy.OnPush })
 ```
-**Важная информация**: даже если для компонента задано значение onPush и ему не передается новая ссылка, Angular по-прежнему будет запускать для него change detector, если произойдет одно из следующих изменений внутри компонента:
-- событие, например click или submit
-- XHR запрос
-- asynchronous JavaScript function - setTimeOut(), setInterval() 
+**!!! Даже если для компонента задано значение onPush и в @Input-свойство НЕ ПЕРЕДАЕТСЯ новая ссылка:**
+1. Angular по-прежнему будет запускать для него change detector и обновлять DOM, если произойдет одно из следующих изменений внутри самого компонента:
+  - event, например click или submit
+  - XHR запрос
+  - asynchronous JavaScript function - setTimeOut(), setInterval()    
+2. Обращение к lifecycle hooks по-прежнему можно выполнять и внутри которых можно производить обращение к @Input-свойству, при этом перерисовки DOM не будет, но её можно выполнить с помощью ChangeDetectorRef.
 
-## Change Detection - ChangeDetectorRef [04. change detection 2]  
-В библиотеке @angular/core есть сервис `ChangeDetectorRef` - он предоставляет доступ к `процесс обнаружения изменений - change detection` конкретного компонента.          
-Основные методы:             
-- detach() - полностью отключает механизм ChangeDetection;
-- detectChanges() - принудительно запускает механизм отслеживания изменений;
-- reattach() - используется после вызова detach() для активации механизма ChangeDetection.            
-
-Действие всех трех методов распространяется только на тот компонент, в пределах которого вызываются эти методы.     
-
+## Change Detection - ChangeDetectorRef [04. change detection 2]           
+В библиотеке @angular/core есть сервис `ChangeDetectorRef` - он предоставляет доступ к `механизму обнаружения изменений - change detection` конкретного компонента.          
+Основные методы:  
+- detach - отключает механизм change detection для текущего компонента и всех его потомков (DOM не будет обновляться)
+- reattach - используется после вызова detach для включения механизма change detection для текущего компонента и всех его потомков
+- markForCheck - включает механизм change detection для текущего компонента и всех его родителей
+- detectChanges - включает механизм change detection для текущего компонента и всех его потомков только один раз
+- checkNoChanges - включает механизм change detection для текущего компонента и всех его потомков и выбрасывает ошибку, если обнаруживаются какие-либо изменения (использовать в режиме разработки)     
+   
 Подключение ChangeDetectorRef:     
 ```js
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
@@ -198,8 +200,6 @@ export class ChildComponent implements OnChanges, DoCheck {
 	constructor(private cd: ChangeDetectorRef) {}
 }
 ```
-https://habr.com/ru/company/infopulse/blog/358860/
-https://habr.com/ru/post/327004/
 
 ## Сервис
 В отличие от компонентов и директив, сервисы не работают с представлениями (html), они выполняют строго определенную и узкую задачу:
