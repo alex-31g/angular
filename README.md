@@ -202,8 +202,7 @@ export class ChildComponent implements OnChanges, DoCheck {
 ```
  
 ## Библиотека immutable.js [05. immutable]  
-
-`Здесь рассмотрена малая часть возможностей immutable.js`     
+`Здесь рассмотрена часть возможностей immutable.js`     
 
 При работе с **onPush** стратегией, необходимо для @Input-свойств использовать immutable типы данных, которые могут предоставить специальные библиотеки.          
 Установка библиотеки immutable.js в проект:           
@@ -221,6 +220,45 @@ export class ChildComponent implements OnChanges, DoCheck {
 
 - **List** [immutable-list.component.ts] - делает из обычного массива - immutable массив
 - **push** - возвращает новый массив с добавленным значением
+
+## HttpClientModule | HttpClient [06. httpclient] 
+Для взаимодействия с сервером и отправки запросов по протоколу http применяется класс **HttpClient**, который предоставляет методы для отправки различного рода запросов: GET, POST, PUT, DELETE. Для его использования необходимо: 
+
+1. Выполнить импорт HttpClientModule [src/app/app.module.ts]:
+```js
+import { HttpClientModule } from '@angular/common/http';
+@NgModule({ 
+	imports: [HttpClientModule], 
+})
+```
+
+2. Создать сервис [src/app/services/http.service.ts] в котором выполнить импорт HttpClient:
+```js
+import { HttpClient } from '@angular/common/http';
+@Injectable()
+export class HttpService {
+  constructor(public httpClient: HttpClient) {}
+}
+```
+Чтобы указать, что сервис может использоваться в других сервисах или компонентах, к классу сервиса применяется декоратор *@Injectable*.     
+
+3. Далее подключаем сервис в нужных компонентах:
+```js
+import { HttpService } from './services/http.service';
+export class AppComponent implements OnInit {
+  constructor(public httpService: HttpService) {}
+}
+```
+и можем использовать (смотри app.component.ts).
+
+## Реактивное программирование RxJS
+Реактивное программирование - программирование с использованием асинхронных потоков.     
+Асинхронный поток - последовательность событий упорядоченных по
+времени.        
+Все может быть асинхронным потоком - событие click, массив значений, ответ, который вернул сервер.
+С помощью набора инструментов можно
+создавать , комбинировать и
+фильтровать потоки.
 
 ## Сервис
 В отличие от компонентов и директив, сервисы не работают с представлениями (html), они выполняют строго определенную и узкую задачу:
