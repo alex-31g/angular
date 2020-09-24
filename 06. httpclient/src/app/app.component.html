@@ -1,3 +1,6 @@
+Смотреть какая строится строка запроса во вкладке Network в браузере
+
+<h3>GET-запрос</h3>
 <button
 	(click)="request_1()"
 >GET 1</button>
@@ -6,10 +9,26 @@
 <br>
 <br>
 
+<h3>GET-запрос с параметрами (вариант 1)</h3>
 <input (keyup)="request_2($event)">
 
 <br>
 <br>
 <br>
 
-<input (keyup)="request_3($event)">
+<h3>GET-запрос с параметрами (вариант 2)</h3>
+<input (keyup)="request_3($event)"> 
+
+<br>
+<br>
+<br>
+
+<h3>POST-запрос</h3>
+<input (keyup)="request_4($event)">
+
+<br>
+<br>
+<br>
+
+<h3>POST-запрос c хедерами</h3>
+<input (keyup)="request_5($event)">
