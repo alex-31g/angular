@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from './services/http.service';
 
 import { pipe, throwError } from 'rxjs';
-import { delay, catchError } from 'rxjs/operators';
+import { delay, map, catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -83,16 +83,29 @@ export class AppComponent implements OnInit {
   // ========================
 
   // После выполнения запроса, и до того как была выполнена подписка с помощью subscribe(), можно работать со стримом (потоком) с помощью rxjs-метода pipe(), который позволяет обрабатывать результаты запроса.
-  // В примере ниже добавим в виде параметров в pipe():
-  // - искуственную задержку с помощью rxjs-оператора delay(), который заранее нужно импортировать
-  // - отлов ошибок с помощью rxjs-оператора catchError(), который заранее нужно импортировать
+  // В примере ниже добавим в виде параметров в pipe() следующие rxjs-операторы, которые заранее нужно импортировать:
+  // - delay() - искуственная задержка, принимает параметр - время задержки выполнения в мс
+  // - map() - модификация ответа, принимает параметр - ф-ция модификатор
+  // - catchError() - отлов ошибок, принимает параметр - ф-ция с объектом ошибки
+  // - tap() - см. файл http.service ф-цию sendGetRequest_observe_2()
   request_6() {
     this.loading = true;
 
     this.httpService
       .sendGetRequest_1()
+
+      // -----------------------------------
+      // код в методе pipe() - должен находиться в service
+
       .pipe(
         delay(1500),
+
+        map((response) => {
+          console.log('RXJS - получено 10 элементов', response);
+          console.log('Вернем 3 элемента');
+          response.length = 3;
+          return response;
+        }),
 
         // catchError - параметром принимает колбек с объектом ошибки.
         // Внутри колбека можно писать логику обработки ошибок, делать логирование и т.д.
@@ -104,6 +117,8 @@ export class AppComponent implements OnInit {
           return throwError(err);
         })
       )
+      // -----------------------------------
+
       .subscribe((response) => {
         this.users = response;
         console.log('RxJS', this.users);
@@ -135,6 +150,24 @@ export class AppComponent implements OnInit {
     const id = event.target.value;
     this.httpService.sendPutRequest(id).subscribe((response) => {
       console.log(response);
+    });
+  }
+
+  // ========================
+  // OBSERVE в объекте options
+  // ========================
+
+  request_9() {
+    this.httpService.sendGetRequest_observe().subscribe((response) => {
+      this.users = response;
+      console.log('OBSERVE 1', this.users);
+    });
+  }
+
+  request_10() {
+    this.httpService.sendGetRequest_observe_2().subscribe((response) => {
+      this.users = response;
+      // console.log('OBSERVE 2', this.users);
     });
   }
 }

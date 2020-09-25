@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+  HttpHeaders,
+  HttpEventType,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { delay, map, catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -166,5 +172,40 @@ export class HttpService {
   // OBSERVE в объекте options
   // ========================
 
-  // В свойстве observe можно явно указать, какой тип данных мы хотим получить в ответе - 'body' (по умолчанию), 'events' или 'response'.
+  // По умолчанию HttpClient возвращает только поле body - тело ответа, а поля headers, status, statusText и др. не возвращает.
+  // За такое поведение отвечает свойство observe со значением 'body' (значение по умолчанию) в объекте options.
+  // Данное свойство может принимать и другие значения - 'events' или 'response':
+  // 'response' - будет получен полный ответ от сервера с полями headers, status, statusText и др.
+  // 'events' - позволяет получить доступ ко всем событиям, которые происходят с асинхронным запросом (пример событий - запрос подготовлен, запрос отправлен, запрос ожидается, запрос пришел). На каждое событие мы получаем event, который мы может обрабатывать внутри rxjs-метода tap(). Таким образом мы получаем детальным доступ ко всем этапам выполнения запроса.
+
+  // observe: 'response'
+  sendGetRequest_observe(): Observable<any> {
+    return this.httpClient.get(`https://jsonplaceholder.typicode.com/posts/1`, {
+      observe: 'response',
+    });
+  }
+
+  // observe: 'events'
+  sendGetRequest_observe_2(): Observable<any> {
+    return this.httpClient
+      .get(`https://jsonplaceholder.typicode.com/posts/1`, {
+        observe: 'events',
+      })
+      .pipe(
+        // tap() - rxjs-оператор, перехватывает event
+        tap((event) => {
+          // HttpEventType - это константы, которые описывают состояние запроса.
+          // Мы сравниваем тип нашего события с этими константами и выполняем некую логику на каждом этапе выполнения запроса.
+
+          // запрос отправлен
+          if (event.type === HttpEventType.Sent) {
+            console.log('Sent =>', event);
+          }
+          // запрос пришел
+          if (event.type === HttpEventType.Response) {
+            console.log('Response =>', event);
+          }
+        })
+      );
+  }
 }
