@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,11 @@ export class HttpService {
   // МЕТОД GET - используется получения данных
   // ========================
 
+  // GET-запрос - принимает минимум 1 параметр - строку запроса
+  // Второй параметр - опциональный объект options с опциями, в который можно передавать различные свойства (например headers, params, observe)
+
   // Для выполнения GET-запроса у объекта HttpClient вызывается метод get(), в который передается адрес запроса
-  sendGetRequest_1() {
+  sendGetRequest_1(): Observable<any> {
     // 1 вариан: подписка - вызов метода subscribe() - непосредственно в сервисе
     // this.httpClient.get('https://jsonplaceholder.typicode.com/users').subscribe(
     //   (res) => {
@@ -38,18 +42,22 @@ export class HttpService {
   }
 
   // GET-запроса с параметрами (вариант 1)
-  sendGetRequest_2(param) {
+  sendGetRequest_2(param): Observable<any> {
     return this.httpClient.get(
       `https://jsonplaceholder.typicode.com/posts/${param}`
     );
   }
+
+  // ========================
+  // PARAMS в объекте options
+  // ========================
 
   // GET-запроса с параметрами (вариант 2) -
   // параметры передаются вторым аргументом в конфигурационный объект со свойством params
 
   // Если нужно получить строку запроса в которой присутствуют параметры вида '?param1=100&param2=200' -
   // можно использовать метод set или свойства fromString и fromObject объекта HttpParams, с помощью которых устанавливаются параметры, и затем этот объект передается в запрос
-  sendGetRequest_3(par1) {
+  sendGetRequest_3(par1): Observable<any> {
     const par2 = '200';
 
     // если ввели 3 - получим строку -
@@ -88,8 +96,8 @@ export class HttpService {
   // ========================
 
   // POST-запрос - принимает минимум 2 параметра - строку запроса и объект body (данные, которые отправляются на сервер).
-  // Третий параметр - можно передавать конфигурацию.
-  sendPostRequest_1(param) {
+  // Третий параметр - опциональный объект options с опциями, в который можно передавать различные свойства (например headers, params, observe)
+  sendPostRequest_1(param): Observable<any> {
     const body = {
       data: param,
       title: 'foo',
@@ -101,16 +109,29 @@ export class HttpService {
     );
   }
 
-  // POST-запрос c заголовками с помощью объекта HttpHeaders
-  sendPostRequest_2(param) {
+  // ========================
+  // HEADERS в объекте options
+  // ========================
+
+  // POST-запрос c заголовками с помощью объекта HttpHeaders.
+  // Хедеры передаются третьим параметром в объекте опций
+  sendPostRequest_2(param): Observable<any> {
     const body = {
       data: param,
       title: 'foo',
     };
 
-    const myHeaders = new HttpHeaders()
-      .set('Authorization', 'my-auth-token')
-      .set('Content-type', 'application/json; charset=UTF-8');
+    // создаем объект хедеров - вариант 1
+    // const myHeaders = new HttpHeaders()
+    //   .set('Authorization', 'my-auth-token')
+    //   .set('Content-type', 'application/json; charset=UTF-8');
+
+    // создаем объект хедеров - вариант 2
+    const myHeaders = new HttpHeaders({
+      Authorization: 'my-auth-token',
+      'Content-type': 'application/json; charset=UTF-8',
+      MyCustomHeader: 'lol',
+    });
 
     return this.httpClient.post(
       'https://jsonplaceholder.typicode.com/posts',
@@ -123,7 +144,7 @@ export class HttpService {
   // МЕТОД DELETE - используется для удаления данных
   // ========================
 
-  sendDeleteRequest(id) {
+  sendDeleteRequest(id): Observable<any> {
     return this.httpClient.delete(
       `https://jsonplaceholder.typicode.com/posts/${id}`
     );
@@ -134,10 +155,16 @@ export class HttpService {
   // ========================
 
   // POST-запрос - принимает минимум 2 параметра - строку запроса и объект body (данные, которые которые должны быть модифицированы).
-  sendPutRequest(id) {
+  sendPutRequest(id): Observable<any> {
     return this.httpClient.put(
       `https://jsonplaceholder.typicode.com/todos/${id}`,
       { completed: true } // изменяем поле completed
     );
   }
+
+  // ========================
+  // OBSERVE в объекте options
+  // ========================
+
+  // В свойстве observe можно явно указать, какой тип данных мы хотим получить в ответе - 'body' (по умолчанию), 'events' или 'response'.
 }
