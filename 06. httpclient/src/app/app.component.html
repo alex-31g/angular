@@ -32,3 +32,29 @@
 
 <h3>POST-запрос c хедерами</h3>
 <input (keyup)="request_5($event)">
+
+<br>
+<br>
+<br>
+
+<h3>RXJS</h3>
+
+<button
+	(click)="request_6()"
+>RXJS</button><br><br>
+
+<span 
+	*ngIf="loading"
+	[style.color]="red" 
+>LOADING ...</span>
+
+<br>
+<br>
+<br>
+
+<h3>DELETE-запрос</h3>
+<input (keyup)="request_7($event)">
+
+<br>
+<br>
+<br>

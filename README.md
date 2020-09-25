@@ -235,12 +235,12 @@ import { HttpClientModule } from '@angular/common/http';
 2. Создать сервис [src/app/services/http.service.ts] в котором выполнить импорт HttpClient:
 ```js
 import { HttpClient } from '@angular/common/http';
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HttpService {
   constructor(public httpClient: HttpClient) {}
 }
-```
-Чтобы указать, что сервис может использоваться в других сервисах или компонентах, к классу сервиса применяется декоратор *@Injectable*.     
+```   
+К классу сервиса был применен декоратор *@Injectable({ providedIn: 'root' })*, который говорит, что данный сервис может использоваться в других сервисах или компонентах корневого модуля AppModule (или root-модуля).
 
 3. Далее подключаем сервис в нужных компонентах:
 ```js

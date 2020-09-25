@@ -7,10 +7,18 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 export class HttpService {
   constructor(private httpClient: HttpClient) {}
 
+  // ========================
+  // Наблюдатель и стрим
+  // ========================
+
   // Все методы сервиса HttpClient возвращают объект Observable, который является частью библиотеки rxjs.
-  // Наблюдатель (Observable) представляет своего рода поток, и для прослушивания событий из этого потока применяется метод подписки subscribe(), которому можно передавать две функции-обработчика:
+  // Наблюдатель (Observable) представляет своего рода поток (стрим), и для прослушивания событий из этого потока применяется метод подписки subscribe(), которому можно передавать две функции-обработчика:
   // - первая выполнится в случае успешного ответа от сервера
   // - вторая - в случае ошибки, которую мы можем обработать
+
+  // ========================
+  // МЕТОД GET
+  // ========================
 
   // Для выполнения GET-запроса у объекта HttpClient вызывается метод get(), в который передается адрес запроса
   sendGetRequest_1() {
@@ -28,16 +36,16 @@ export class HttpService {
     return this.httpClient.get('https://jsonplaceholder.typicode.com/users');
   }
 
-  // ============================
-
   // GET-запроса с параметрами (вариант 1)
   sendGetRequest_2(param) {
     return this.httpClient.get(
-      'https://jsonplaceholder.typicode.com/posts/' + param
+      `https://jsonplaceholder.typicode.com/posts/${param}`
     );
   }
 
-  // GET-запроса с параметрами (вариант 2) используя объект HttpParams
+  // GET-запроса с параметрами (вариант 2) -
+  // параметры передаются вторым аргументом в конфигурационный объект со свойством params
+
   // Если нужно получить строку запроса в которой присутствуют параметры вида '?param1=100&param2=200' -
   // можно использовать метод set или свойства fromString и fromObject объекта HttpParams, с помощью которых устанавливаются параметры, и затем этот объект передается в запрос
   sendGetRequest_3(par1) {
@@ -74,7 +82,12 @@ export class HttpService {
     );
   }
 
-  // POST-запрос
+  // ========================
+  // МЕТОД POST
+  // ========================
+
+  // POST-запрос - принимает минимум 2 параметра - строку запроса и body (данные, которые отправляются на сервер).
+  // Третий параметр - можно передавать конфигурацию.
   sendPostRequest_1(param) {
     const body = {
       data: param,
@@ -102,6 +115,16 @@ export class HttpService {
       'https://jsonplaceholder.typicode.com/posts',
       body,
       { headers: myHeaders }
+    );
+  }
+
+  // ========================
+  // МЕТОД DELETE
+  // ========================
+
+  sendDeleteRequest(id) {
+    return this.httpClient.delete(
+      `https://jsonplaceholder.typicode.com/posts/${id}`
     );
   }
 }
