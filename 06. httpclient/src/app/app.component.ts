@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { HttpService } from './services/http.service';
 
-import { delay } from 'rxjs/operators';
-import { pipe } from 'rxjs';
+import { pipe, throwError } from 'rxjs';
+import { delay, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
         console.log('GET_1', this.users);
       },
       (error) => {
-        console.log('GET_1', error);
+        console.log('GET_1 error: ', error);
       }
     );
   }
@@ -41,29 +41,19 @@ export class AppComponent implements OnInit {
   request_2(event) {
     const num = event.target.value;
 
-    this.httpService.sendGetRequest_2(num).subscribe(
-      (response) => {
-        this.users = response;
-        console.log('GET_2', this.users);
-      },
-      (error) => {
-        console.log('GET_2', error);
-      }
-    );
+    this.httpService.sendGetRequest_2(num).subscribe((response) => {
+      this.users = response;
+      console.log('GET_2', this.users);
+    });
   }
 
   request_3(event) {
     const num = event.target.value;
 
-    this.httpService.sendGetRequest_3(num).subscribe(
-      (response) => {
-        this.users = response;
-        console.log('GET_3', this.users);
-      },
-      (error) => {
-        console.log('GET_3', error);
-      }
-    );
+    this.httpService.sendGetRequest_3(num).subscribe((response) => {
+      this.users = response;
+      console.log('GET_3', this.users);
+    });
   }
 
   // ========================
@@ -73,43 +63,47 @@ export class AppComponent implements OnInit {
   request_4(event) {
     const num = event.target.value;
 
-    this.httpService.sendPostRequest_1(num).subscribe(
-      (response) => {
-        this.users = response;
-        console.log('POST', this.users);
-      },
-      (error) => {
-        console.log('POST', error);
-      }
-    );
+    this.httpService.sendPostRequest_1(num).subscribe((response) => {
+      this.users = response;
+      console.log('POST', this.users);
+    });
   }
 
   request_5(event) {
     const num = event.target.value;
 
-    this.httpService.sendPostRequest_2(num).subscribe(
-      (response) => {
-        this.users = response;
-        console.log('POST', this.users);
-      },
-      (error) => {
-        console.log('POST', error);
-      }
-    );
+    this.httpService.sendPostRequest_2(num).subscribe((response) => {
+      this.users = response;
+      console.log('POST', this.users);
+    });
   }
 
   // ========================
   // RxJS операторы
   // ========================
 
-  // После выполнения запроса, и до того как была выполнена подписка с помощью subscribe(), можно работать со стримом (потоком) с помощью rxjs-метода pipe(), который позволяет обработать результаты запроса.
-  // В примере ниже добавим искуственную задержку с помощью ф-ции delay(), которую заранее нужно импортировать.
+  // После выполнения запроса, и до того как была выполнена подписка с помощью subscribe(), можно работать со стримом (потоком) с помощью rxjs-метода pipe(), который позволяет обрабатывать результаты запроса.
+  // В примере ниже добавим в виде параметров в pipe():
+  // - искуственную задержку с помощью rxjs-оператора delay(), который заранее нужно импортировать
+  // - отлов ошибок с помощью rxjs-оператора catchError(), который заранее нужно импортировать
   request_6() {
     this.loading = true;
 
     this.httpService
       .sendGetRequest_1()
-      .pipe(delay(1500))
+      .pipe(
+        delay(1500),
+
+        // catchError - параметром принимает колбек с объектом ошибки.
+        // Внутри колбека можно писать логику обработки ошибок, делать логирование и т.д.
+        catchError((err) => {
+          console.log('ERROR: ', err.message);
+
+          // throwError импортируется из rxjs - он создает новый Observable, после того как случилась ошибка.
+          // Логику внутри нужно завершать возвращая throwError:
+          return throwError(err);
+        })
+      )
       .subscribe((response) => {
         this.users = response;
         console.log('RxJS', this.users);
@@ -130,6 +124,17 @@ export class AppComponent implements OnInit {
         '\n',
         response
       );
+    });
+  }
+
+  // ========================
+  // PUT
+  // ========================
+
+  request_8(event) {
+    const id = event.target.value;
+    this.httpService.sendPutRequest(id).subscribe((response) => {
+      console.log(response);
     });
   }
 }

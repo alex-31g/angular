@@ -1,4 +1,11 @@
-Смотреть какая строится строка запроса во вкладке Network в браузере
+<div [style.color]="red">
+Во вкладке Network -- Headers в браузере наблюдать за следующими полями:<br>
+- request url<br>
+- request method<br>
+- status code<br>
+</div>
+
+<br>
 
 <h3>GET-запрос</h3>
 <button
@@ -54,6 +61,13 @@
 
 <h3>DELETE-запрос</h3>
 <input (keyup)="request_7($event)">
+
+<br>
+<br>
+<br>
+
+<h3>PUT-запрос</h3>
+<input (keyup)="request_8($event)">
 
 <br>
 <br>
