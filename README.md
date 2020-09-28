@@ -278,15 +278,17 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/interceptor.service';
 
 const INTERCEPTOR_PROVIDER: Provider = {
-
 	// injection-токен HTTP_INTERCEPTORS
 	provide: HTTP_INTERCEPTORS, 
-	
+
 	// имя класса, в котором используем HttpInterceptor
-	useClass: InterceptorService, 
-	
-	// параметр {multi: true} говорит, что  injection-токен HTTP_INTERCEPTORS внедряет не одно, а массив значений. Такой механизм позволяет создавать в приложении Angular неограниченное количество HTTP Interceptor-ов.
-  multi: true,
+	useClass: InterceptorService,    
+
+	// параметр {multi: true} говорит, что  injection-токен HTTP_INTERCEPTORS      
+	// внедряет не одно значение, а массив значений.      
+	// Такой механизм позволяет создавать в приложении Angular      
+	// неограниченное количество HTTP Interceptor-ов.      
+	multi: true,
 };
 
 @NgModule({
