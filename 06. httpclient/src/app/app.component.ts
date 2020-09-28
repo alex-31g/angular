@@ -170,4 +170,18 @@ export class AppComponent implements OnInit {
       // console.log('OBSERVE 2', this.users);
     });
   }
+
+  // ========================
+  // responseType в объекте options
+  // ========================
+
+  request_11() {
+    this.httpService.sendGetRequest_responseType().subscribe((response) => {
+      this.users = response;
+      console.log('responseType', this.users);
+
+      // Так как в методе sendGetRequest_responseType было задано responseType: 'text', Ангуляр не выполнил парсинг строки, полученной от сервера, в объект. Выполняем парсинг самостоятельно:
+      console.log(JSON.parse(this.users));
+    });
+  }
 }

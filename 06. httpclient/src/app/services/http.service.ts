@@ -29,7 +29,16 @@ export class HttpService {
   // ========================
 
   // GET-запрос - принимает минимум 1 параметр - строку запроса
-  // Второй параметр - опциональный объект options с опциями, в который можно передавать различные свойства (например headers, params, observe)
+  // Второй параметр - опциональный объект options с опциями, в который можно передавать различные свойства (например headers, params, observe):
+
+  // options: {
+  //   headers?: ...,
+  //   observe?: ...,
+  //   params?: ...,
+  //   reportProgress?: ...,
+  //   responseType?: ...,
+  //   withCredentials?: ...,
+  // }
 
   // Для выполнения GET-запроса у объекта HttpClient вызывается метод get(), в который передается адрес запроса
   sendGetRequest_1(): Observable<any> {
@@ -207,5 +216,21 @@ export class HttpService {
           }
         })
       );
+  }
+
+  // ========================
+  // responseType в объекте options
+  // ========================
+
+  // responseType- указывает тип данных, которые получаем от сервера ('arraybuffer' | 'blob' | 'json' | 'text').
+  // По умолчанию responseType: 'json', то-есть Angular, после получения данных от сервера, самостоятельно парсит их из json-строки в js-object.
+
+  // !!! Пример ниже не имеет никакого практического применения, просто показывает как работает responseType !!!
+  // В примере ниже укажем responseType: 'text', таким образом, после получения данных от сервера в виде json-строки, он не будет парсить данные в объект.
+
+  sendGetRequest_responseType(): Observable<any> {
+    return this.httpClient.get(`https://jsonplaceholder.typicode.com/posts/1`, {
+      responseType: 'text',
+    });
   }
 }
