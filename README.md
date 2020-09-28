@@ -251,6 +251,50 @@ export class AppComponent implements OnInit {
 ```
 и можем использовать (смотри app.component.ts).
 
+## HttpInterceptor [06. httpclient]
+**HttpInterceptor** - класс, который позволяет перехватывать HTTP-запросы перед их отправкой и вносить в них изменения.  
+Применение - отправка авторизационных данных, логирование и обработка серверных ошибок.    
+
+Создание сервиса интерсептора:
+1. [*interceptor.service.ts*] Класс должен иметь наследование от HttpInterceptor и реализовывать метод intercept():
+```js
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class InterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>,next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log(req);
+    return next.handle(req);
+  }
+}
+```
+2. [*app.module.ts*] HttpInterceptor должен быть добавлен в поле providers декоратора @NgModule:
+```js
+import { Provider } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
+
+const INTERCEPTOR_PROVIDER: Provider = {
+
+	// injection-токен HTTP_INTERCEPTORS
+	provide: HTTP_INTERCEPTORS, 
+	
+	// имя класса, в котором используем HttpInterceptor
+	useClass: InterceptorService, 
+	
+	// параметр {multi: true} говорит, что  injection-токен HTTP_INTERCEPTORS внедряет не одно, а массив значений. Такой механизм позволяет создавать в приложении Angular неограниченное количество HTTP Interceptor-ов.
+  multi: true,
+};
+
+@NgModule({
+  providers: [INTERCEPTOR_PROVIDER],
+})
+export class AppModule {}
+```
+
 ## Реактивное программирование RxJS
 Реактивное программирование - программирование с использованием асинхронных потоков.     
 Асинхронный поток - последовательность событий упорядоченных по
