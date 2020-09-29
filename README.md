@@ -255,7 +255,7 @@ export class AppComponent implements OnInit {
 **HttpInterceptor** - класс, который позволяет перехватывать HTTP-запросы перед их отправкой и вносить в них изменения.  
 Применение - отправка авторизационных данных, логирование и обработка серверных ошибок.    
 
-Создание сервиса интерсептора:
+**Создание сервиса интерсептора**:
 1. [*interceptor.service.ts*] Класс должен иметь наследование от HttpInterceptor и реализовывать метод intercept():
 ```js
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
@@ -265,9 +265,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  intercept(req: HttpRequest<any>,next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req);
-    return next.handle(req);
+	// intercept() модифицирует исходный запрос и возвращает объект Observable события HttpEvent<any>, 
+	// который в свою очередь возвращает метод next() объекта типа HttpRequest
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    // Оригинальный запрос req нельзя изменять.
+    // Сперва его нужно клонировать с помощью метода clone().
+		// clone() получает параметром объект, с помощью которого мы можем модифицировать запрос
+		const cloned = req.clone({ ... });
+		
+		// В качестве аргумента next() принимает модифицированный объект запроса
+    return next.handle(cloned);
   }
 }
 ```
@@ -281,10 +289,10 @@ const INTERCEPTOR_PROVIDER: Provider = {
 	// injection-токен HTTP_INTERCEPTORS
 	provide: HTTP_INTERCEPTORS, 
 
-	// имя класса, в котором используем HttpInterceptor
+	// имя класса, который является HttpInterceptor
 	useClass: InterceptorService,    
 
-	// параметр {multi: true} говорит, что  injection-токен HTTP_INTERCEPTORS      
+	// параметр {multi: true} говорит, что injection-токен HTTP_INTERCEPTORS      
 	// внедряет не одно значение, а массив значений.      
 	// Такой механизм позволяет создавать в приложении Angular      
 	// неограниченное количество HTTP Interceptor-ов.      
