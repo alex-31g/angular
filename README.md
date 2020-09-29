@@ -261,22 +261,20 @@ export class AppComponent implements OnInit {
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class InterceptorService implements HttpInterceptor {
-	// intercept() модифицирует исходный запрос и возвращает объект Observable события HttpEvent<any>, 
-	// который в свою очередь возвращает метод next() объекта типа HttpRequest
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		// intercept() модифицирует исходный запрос и возвращает объект Observable события HttpEvent<any>, 
+		// который в свою очередь возвращает метод next() объекта типа HttpRequest
+		intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    // Оригинальный запрос req нельзя изменять.
-    // Сперва его нужно клонировать с помощью метода clone().
+		// Оригинальный запрос req нельзя изменять.
+		// Сперва его нужно клонировать с помощью метода clone().
 		// clone() получает параметром объект, с помощью которого мы можем модифицировать запрос
 		const cloned = req.clone({ ... });
-		
+
 		// В качестве аргумента next() принимает модифицированный объект запроса
-    return next.handle(cloned);
-  }
+		return next.handle(cloned);
+	}
 }
 ```
 2. [*app.module.ts*] HttpInterceptor должен быть добавлен в поле providers декоратора @NgModule:
