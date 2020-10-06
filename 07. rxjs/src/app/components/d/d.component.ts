@@ -9,49 +9,52 @@ export class DComponent implements OnInit {
   constructor() {}
 
   // ===============================================
-  // 4. Оповещение об ошибках Observable-объекта
+  // 4. Оповещение об ошибках Observable-объекта, которые могут возникнуть в результате асинхронной операции
   // ===============================================
 
   ngOnInit() {
     console.clear();
 
-    var source = new Observable(function (observer) {
-      // Сохраняем значение setTimeout в переменную id
-      let id = setTimeout(function () {
-        console.log('timeout');
-        observer.next(100);
-        observer.complete();
+    // создание Observable
+    var source = Observable.create(function (observer) {
+      // Внутри setTimeout мы имитируем обращение к серверу ...
+      var id = setTimeout(function () {
+        // ... и в процессе этого обращение имитируем, что произошла ошибка ...
+        try {
+          throw '404'; // исключение
+        } catch (error) {
+          // ... отлавливаем это исключение и с помощью error() оповещаем всех подписчиков
+          observer.error(error);
+        }
       }, 2000);
 
       console.log('start');
 
-      // При вызове у подписчиков unsubscribe(), будет вызываться данная ф-ция
       return function () {
-        clearInterval(id);
+        console.log('Произошла отписка');
+        clearTimeout(id);
       };
     });
 
-    var sub = source.subscribe(
+    var subject = source.subscribe(
       function (value) {
         console.log('next ' + value);
       },
+
+      // При возникновении ошибки в Observable-объекте будет запущена вторая ф-ция-обработчик
+      // (второй параметр subscribe)
       function (error) {
-        console.error(error);
+        console.error('В Observable ошибка: ' + error);
       },
+
       function () {
         console.log('completed');
       }
     );
 
-    setTimeout(function () {
-      sub.unsubscribe();
-      console.log('unsubscribed');
-    }, 1000);
-
-    // Через 1с - произойдет отписка от Observable-объекта с помощью sub.unsubscribe(), то-есть мы перестаем наблюдать за потоком.
-    // В консоли мы получим следующее:
-
-    // start         --> запустился Observable
-    // unsubscribed  --> подписчик отписался от потока и timeout мы не увидим
+    // В консоли мы увидим следующее:
+    // start
+    // В Observable ошибка: 404
+    // Произошла отписка - отписка всегда происходит в случаи возникновения ошибки у Observable
   }
 }
