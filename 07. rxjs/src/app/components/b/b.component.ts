@@ -9,49 +9,54 @@ export class BComponent implements OnInit {
   constructor() {}
 
   // ===============================================
-  // Создание Observable-объекта и его подписчиков
+  // 2. Отписка от Observable-объекта - 1
   // ===============================================
 
   ngOnInit() {
     console.clear();
 
-    // Создадим простой Observable, задача которого - через 1.5с с помощью next() выдать наблюдателям данные,
-    // и с помощью complete() - оповестить наблюдателей, что поток завершился и новой информации не будет
-
-    // 1й способ создания Observable
-    // var source = Observable.create(function (observer) {
-
-    // 2й способ создания Observable
+    // Создаем Observable-объект, который выдаст первое событие через 2с
     var source = new Observable(function (observer) {
-      let isErr = false;
-
-      // В реальном приложении фрагмент внутри setTimeout - это асинхронная операция -
-      // например, обращение к серверу и другие действия, которые занимают большой отрезок времени
       setTimeout(function () {
-        console.log('=====>>> a.component');
-        observer.next(100); // оповещение наблюдателя о новом элементе в последовательности
-        if (isErr) observer.error('error'); // оповещение наблюдателя об ошибке
-        observer.complete(); // оповещение наблюдателя о завершении последовательности
-      }, 1500);
+        console.log('timeout');
+        observer.next(100);
+        observer.complete();
+      }, 2000);
+
+      console.log('start');
     });
 
-    // Теперь source - это поток с которого можно черпать данные.
-    // Cоздание подписчика выполняется с помощью метода subscribe(), который принимает три обработчика
+    // Создаем подписчиков
     var sub = source.subscribe(
-      // 1й метод - сработает, когда в Observable произойдет событие next()
       function (value) {
         console.log('next ' + value);
       },
-
-      // 2й метод - сработает, когда в Observable произойдет событие-ошибка error()
       function (error) {
         console.error(error);
       },
-
-      // 3й метод - сработает, когда в Observable произойдет событие complete()
       function () {
         console.log('completed');
       }
     );
+
+    setTimeout(function () {
+      sub.unsubscribe();
+      console.log('unsubscribed');
+    }, 1000);
+
+    // Через 1с - произойдет отписка от Observable-объекта с помощью sub.unsubscribe(), то-есть мы перестаем наблюдать за потоком.
+    // В консоли мы получим следующее:
+
+    // start         --> запустился Observable
+    // unsubscribed  --> подписчик отписался от потока
+    // timeout       --> но при этом сам Observable продолжает работать
+
+    // Так как мы видим в консоли timeout, это говорит о том, что асинхронная операция продолжается
+    // даже несмотря на то, что у нас произошла отписка от потока, то-есть никто не ожидает результата работы
+    // асинхронной операции
+
+    // !!!
+    // Для того, чтобы метод unsubscribe() смог прекратить не нужную нам уже асинхронную операцию
+    // нужно изменить код при создании Observable-объекта (смотри c.component)
   }
 }
