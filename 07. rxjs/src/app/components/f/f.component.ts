@@ -17,6 +17,7 @@ export class FComponent implements OnInit {
   // ===============================================
   // 6. Создание Observable-объектов (потоков) на основе данных.
   //    RXJS методы: from, of, interval
+  //    RXJS операторы: filter, map, take
   // ===============================================
 
   ngOnInit() {

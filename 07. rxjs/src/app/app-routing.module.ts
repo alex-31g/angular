@@ -7,6 +7,7 @@ import { DComponent } from './components/d/d.component';
 import { EComponent } from './components/e/e.component';
 import { FComponent } from './components/f/f.component';
 import { GComponent } from './components/g/g.component';
+import { HComponent } from './components/h/h.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '1' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: '5', component: EComponent },
   { path: '6', component: FComponent },
   { path: '7', component: GComponent },
+  { path: '8', component: HComponent },
 ];
 
 @NgModule({

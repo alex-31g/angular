@@ -11,6 +11,7 @@ import { DComponent } from './components/d/d.component';
 import { EComponent } from './components/e/e.component';
 import { FComponent } from './components/f/f.component';
 import { GComponent } from './components/g/g.component';
+import { HComponent } from './components/h/h.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { GComponent } from './components/g/g.component';
     EComponent,
     FComponent,
     GComponent,
+    HComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],
