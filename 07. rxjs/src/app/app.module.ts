@@ -8,9 +8,21 @@ import { AComponent } from './components/a/a.component';
 import { BComponent } from './components/b/b.component';
 import { CComponent } from './components/c/c.component';
 import { DComponent } from './components/d/d.component';
+import { EComponent } from './components/e/e.component';
+import { FComponent } from './components/f/f.component';
+import { GComponent } from './components/g/g.component';
 
 @NgModule({
-  declarations: [AppComponent, AComponent, BComponent, CComponent, DComponent],
+  declarations: [
+    AppComponent,
+    AComponent,
+    BComponent,
+    CComponent,
+    DComponent,
+    EComponent,
+    FComponent,
+    GComponent,
+  ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
