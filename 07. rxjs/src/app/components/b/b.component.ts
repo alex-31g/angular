@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-a',
-  templateUrl: './a.component.html',
+  selector: 'app-b',
+  templateUrl: './b.component.html',
 })
-export class AComponent implements OnInit {
+export class BComponent implements OnInit {
   constructor() {}
 
   // ===============================================
