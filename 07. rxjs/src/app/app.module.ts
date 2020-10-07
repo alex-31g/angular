@@ -13,6 +13,7 @@ import { FComponent } from './components/f/f.component';
 import { GComponent } from './components/g/g.component';
 import { HComponent } from './components/h/h.component';
 import { IComponent } from './components/i/i.component';
+import { JComponent } from './components/j/j.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { IComponent } from './components/i/i.component';
     GComponent,
     HComponent,
     IComponent,
+    JComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],

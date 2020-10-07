@@ -14,18 +14,24 @@ export class IComponent implements OnInit {
   ngOnInit() {
     console.clear();
 
-    // ======================
+    // 44:35 ======================
 
-    // // map - применяет указанную функцию к каждому значению, которое предоставил источник (Observable)
-    // let source = interval(100).pipe(
+    // // map - применяет функцию, полученную в качестве параметра, к каждому значению, которое предоставил источник (Observable), и возвращает её результат.
+
+    // // С помощью interval() создаем поток, в котором каждые 100мс будет появляться новое событие и в этом событии производит инкрементацию счетчика начиная с 0
+    // let source1 = interval(100).pipe(
+    //   // Ограничим этот поток десятью событиями с помощью take()
     //   take(10),
-    //   map((x) => x * 2)
+    //   map((x, i) => {
+    //     console.log('индекс текущего значения =', i);
+    //     return x * 2;
+    //   })
     // );
-    // source.subscribe((x) => console.log(x));
+    // source1.subscribe((x) => console.log(x));
 
-    // ======================
+    // 45:54 ======================
 
-    // let source = interval(100).pipe(
+    // let source2 = interval(100).pipe(
     //   take(10),
     //   map((x) =>
     //     timer(500).pipe(
@@ -35,20 +41,17 @@ export class IComponent implements OnInit {
     //     )
     //   )
     // );
-    // source.subscribe((x) => console.log(x.toString())); // x новый Observable из источника source
+    // source2.subscribe((x) => console.log(x.toString())); // x новый Observable из источника source
 
-    // ======================
+    // 48:39 ======================
 
-    // let source = interval(100).pipe(
-    //   take(10),
-    //   // flatMap подписываеться на событие от каждого Observable определенного в параметрах
-    //   // http://reactivex.io/documentation/operators/flatmap.html
-    //   flatMap(
-    //     //
-    //     (x) => timer(500).pipe(map(() => x))
-    //   )
-    // );
-    // source.subscribe((x) => console.log(x));
+    let source3 = interval(100).pipe(
+      take(10),
+      // flatMap подписывается на событие от каждого Observable определенного в параметрах
+      // http://reactivex.io/documentation/operators/flatmap.html
+      flatMap((x) => timer(500).pipe(map(() => x)))
+    );
+    source3.subscribe((x) => console.log(x));
 
     // ======================
   }
