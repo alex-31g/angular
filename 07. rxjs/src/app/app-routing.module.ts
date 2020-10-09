@@ -10,6 +10,8 @@ import { GComponent } from './components/g/g.component';
 import { HComponent } from './components/h/h.component';
 import { IComponent } from './components/i/i.component';
 import { JComponent } from './components/j/j.component';
+import { KComponent } from './components/k/k.component';
+import { LComponent } from './components/l/l.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '1' },
@@ -23,6 +25,8 @@ const routes: Routes = [
   { path: '8', component: HComponent },
   { path: '9', component: IComponent },
   { path: '10', component: JComponent },
+  { path: '11', component: KComponent },
+  { path: '12', component: LComponent },
 ];
 
 @NgModule({

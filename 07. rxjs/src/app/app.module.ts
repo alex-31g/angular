@@ -14,6 +14,8 @@ import { GComponent } from './components/g/g.component';
 import { HComponent } from './components/h/h.component';
 import { IComponent } from './components/i/i.component';
 import { JComponent } from './components/j/j.component';
+import { KComponent } from './components/k/k.component';
+import { LComponent } from './components/l/l.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { JComponent } from './components/j/j.component';
     HComponent,
     IComponent,
     JComponent,
+    KComponent,
+    LComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],
