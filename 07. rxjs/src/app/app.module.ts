@@ -20,6 +20,7 @@ import { MComponent } from './components/m/m.component';
 import { NComponent } from './components/n/n.component';
 import { OComponent } from './components/o/o.component';
 import { PComponent } from './components/p/p.component';
+import { QComponent } from './components/q/q.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { PComponent } from './components/p/p.component';
     NComponent,
     OComponent,
     PComponent,
+    QComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],

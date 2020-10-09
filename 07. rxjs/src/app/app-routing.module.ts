@@ -16,6 +16,7 @@ import { MComponent } from './components/m/m.component';
 import { NComponent } from './components/n/n.component';
 import { OComponent } from './components/o/o.component';
 import { PComponent } from './components/p/p.component';
+import { QComponent } from './components/q/q.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '1' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: '14', component: NComponent },
   { path: '15', component: OComponent },
   { path: '16', component: PComponent },
+  { path: '17', component: QComponent },
 ];
 
 @NgModule({
