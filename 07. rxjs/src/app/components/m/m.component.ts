@@ -13,16 +13,18 @@ import {
   map,
   catchError,
   retry,
+  publish,
+  refCount,
 } from 'rxjs/operators';
 import { clear } from 'console';
 
 @Component({
-  selector: 'app-l',
-  templateUrl: './l.component.html',
+  selector: 'app-m',
+  templateUrl: './m.component.html',
 })
-export class LComponent implements OnInit {
+export class MComponent implements OnInit {
   // ===============================================
-  // 12. cold observable
+  // 13. hot observable: publish, refCount
   // ===============================================
 
   source: Observable<number>;
@@ -32,16 +34,23 @@ export class LComponent implements OnInit {
   // observable может относиться к одному из двух типов - cold или hot.
   // При создании observable, объект по умолчанию становится cold.
 
+  // hot observable - объект, который для всех подписчика использует один поток событий
+  // hot observable можно сравнить с прямой трансляцией на Youtube - каждый пользователь просматривает видео с того момента как подключился к трансляции
+
   ngOnInit() {
     console.clear();
 
     // Создаем поток, который с интервалом 500мс в течении 10 раз генерирует значения начиная с 0.
-    this.source = interval(500).pipe(take(10));
-  }
+    this.source = interval(500).pipe(
+      take(10),
+      publish(), // сделать поток событий общим для всех
 
-  // Когда мы нажмем кнопки Subscribe 1 и Subscribe 2, то увидим в консоли,
-  // что два разных подписчика получают одинаковые данные, начиная с 0
-  // Это и есть cold observable
+      // refCount() - начать выдавать события при появлении первого подписчика
+      // Все послудующие подписчики будут получать текущие события, которые появились на момент их подключения,
+      // не видя предыдущих
+      refCount()
+    );
+  }
 
   subscribe1() {
     this.source.subscribe((value) => {
@@ -54,8 +63,4 @@ export class LComponent implements OnInit {
       console.log('        Subscriber 2 received a value ' + value);
     });
   }
-
-  // cold observable - объект, который для каждого подписчика создает идентичную последовательность событий
-  // cold Observable можно сравнить с видео на Youtube - каждый пользователь запустивший видео, не зависимо от момента нажатия на Play,
-  // будет смотреть видео с самого начала.
 }

@@ -12,6 +12,10 @@ import { IComponent } from './components/i/i.component';
 import { JComponent } from './components/j/j.component';
 import { KComponent } from './components/k/k.component';
 import { LComponent } from './components/l/l.component';
+import { MComponent } from './components/m/m.component';
+import { NComponent } from './components/n/n.component';
+import { OComponent } from './components/o/o.component';
+import { PComponent } from './components/p/p.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '1' },
@@ -27,6 +31,10 @@ const routes: Routes = [
   { path: '10', component: JComponent },
   { path: '11', component: KComponent },
   { path: '12', component: LComponent },
+  { path: '13', component: MComponent },
+  { path: '14', component: NComponent },
+  { path: '15', component: OComponent },
+  { path: '16', component: PComponent },
 ];
 
 @NgModule({

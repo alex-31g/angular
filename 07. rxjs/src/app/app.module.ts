@@ -16,6 +16,10 @@ import { IComponent } from './components/i/i.component';
 import { JComponent } from './components/j/j.component';
 import { KComponent } from './components/k/k.component';
 import { LComponent } from './components/l/l.component';
+import { MComponent } from './components/m/m.component';
+import { NComponent } from './components/n/n.component';
+import { OComponent } from './components/o/o.component';
+import { PComponent } from './components/p/p.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +36,10 @@ import { LComponent } from './components/l/l.component';
     JComponent,
     KComponent,
     LComponent,
+    MComponent,
+    NComponent,
+    OComponent,
+    PComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],
